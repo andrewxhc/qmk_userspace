@@ -11,5 +11,5 @@ sofle/rev1:andrewxhc
 
 The keymap-local `rules.mk` selects the shared `users/andrewxhc` module, which
 contains the feature configuration and behavior implementations. See the
-repository's [`PORTING.md`](../../../../PORTING.md) for physical mapping,
+repository's [`PORTING.md`](../../../../../PORTING.md) for physical mapping,
 reference provenance, compromises, validation, and flashing instructions.

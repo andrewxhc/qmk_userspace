@@ -17,7 +17,7 @@ replacement for the keymap source.
   and the QMK development-board defaults map `promicro` to
   [`atmega32u4`](https://github.com/qmk/qmk_firmware/blob/f0e090f67a90f9b653faeddbf5a1c4f75e24e91a/data/mappings/defaults.hjson).
 - Port entry points:
-  [`keymap.c`](keyboards/sofle/keymaps/andrewxhc/keymap.c) and the shared
+  [`keymap.c`](keyboards/sofle/rev1/keymaps/andrewxhc/keymap.c) and the shared
   [`users/andrewxhc`](users/andrewxhc/) module.
 
 QMK's [External Userspace](https://docs.qmk.fm/newbs_external_userspace)
@@ -25,25 +25,31 @@ layout is used so the keymap remains separate from `qmk_firmware`.
 
 ### Pinned CLI scaffold reconciliation
 
-A fresh keymap was generated with the QMK `0.33.11` CLI before the final
-rebuild. It used a unique temporary name and therefore could not overwrite the
-port:
+A fresh keymap was generated from the pinned QMK `0.33.11` checkout into the
+configured external userspace on the isolated `sofle-default` branch. This
+kept the generated files separate from the existing port while preserving the
+exact path selection performed by the CLI:
 
-```bash
-cd "/c/Keyboard Firmware/qmk_firmware"
-qmk new-keymap -kb sofle/rev1 -km codex_scaffold_019f9c22 --skip-converter
+```powershell
+qmk config user.overlay_dir="C:/Keyboard Firmware/qmk_userspace"
+qmk new-keymap -kb sofle/rev1 -km andrewxhc
 ```
 
-The CLI placed it at
-`keyboards/sofle/keymaps/codex_scaffold_019f9c22`, confirming that
-`keyboards/sofle/keymaps/andrewxhc` is the correct keyboard-level location
-even though the build target is `sofle/rev1`. The generated scaffold was also
-compiled successfully with
-`qmk compile -kb sofle/rev1 -km codex_scaffold_019f9c22` before its temporary
-source and build artifacts were removed.
+The CLI placed the scaffold at
+`keyboards/sofle/rev1/keymaps/andrewxhc`. QMK can resolve a keymap from the
+shared parent location `keyboards/sofle/keymaps`, but in a fresh external
+userspace it creates the fully qualified `sofle/rev1` location. The port was
+therefore moved to the generated revision-specific path. The build target
+remains `sofle/rev1:andrewxhc`.
 
-The comparison produced three behavior-neutral changes:
+The generated scaffold remains available in commit `a954c67` on the
+`sofle-default` branch for comparison; that stock scaffold was not merged into
+the port.
 
+The reconciliation produced four behavior-neutral changes:
+
+- moved the keymap from the shared `keyboards/sofle/keymaps` directory to the
+  CLI-generated `keyboards/sofle/rev1/keymaps` directory;
 - added keymap-local `config.h` and `readme.md` files to match the scaffold's
   file structure;
 - kept the actual compile-time settings in `users/andrewxhc/config.h`, where
