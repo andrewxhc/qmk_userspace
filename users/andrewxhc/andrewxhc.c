@@ -647,15 +647,23 @@ static bool swapper_ignored(int8_t position, bool window_swapper) {
     return position == 0 || position == 1 || (position >= 19 && position <= 22);
 }
 
-static bool process_swapper(bool window) {
+static bool process_swapper(bool window, keyrecord_t *record) {
     bool *active = window ? &window_swapper_active : &app_swapper_active;
-    if (!*active) {
-        *active = true;
-        register_weak_mods(MOD_BIT(KC_LALT));
+    const uint16_t step_keycode = window ? KC_GRV : KC_TAB;
+
+    if (record->event.pressed) {
+        if (!*active) {
+            *active = true;
+            register_weak_mods(MOD_BIT(KC_LALT));
+        }
+        // Keep the step key down until the physical release so consecutive
+        // steps cannot be coalesced by the host as zero-delay synthetic taps.
+        register_code16(step_keycode);
+        caps_word_off();
+        andrewxhc_combo_note_keypress();
+    } else {
+        unregister_code16(step_keycode);
     }
-    tap_code(window ? KC_GRV : KC_TAB);
-    caps_word_off();
-    andrewxhc_combo_note_keypress();
     return false;
 }
 
@@ -798,15 +806,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
         case U_SWAPPER:
-            if (record->event.pressed) {
-                process_swapper(false);
-            }
-            return false;
+            return process_swapper(false, record);
         case U_WINDOW_SWAPPER:
-            if (record->event.pressed) {
-                process_swapper(true);
-            }
-            return false;
+            return process_swapper(true, record);
         case U_SMART_MOUSE:
             if (record->event.pressed) {
                 const int8_t position = zen_position(record->event.key);
