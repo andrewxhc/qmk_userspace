@@ -1,4 +1,4 @@
-// Copyright 2026 Andrew X. H. C.
+// Copyright 2026 andrewxhc
 // SPDX-License-Identifier: GPL-2.0-only
 
 #include "andrewxhc.h"
