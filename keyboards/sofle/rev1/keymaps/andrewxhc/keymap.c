@@ -64,7 +64,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [APP] = LAYOUT_ZEN(
-        U_SWAPPER,      S(KC_TAB),       U_DESKTOP_PREV,  U_DESKTOP_MANAGER, U_DESKTOP_NEXT, ___,            U_MEH(KC_A),    U_MEH(KC_B),     U_MEH(KC_C),    U_MEH(KC_D),    U_MEH(KC_E),    ___,
+        U_SWAPPER,      S(U_SWAPPER),     U_DESKTOP_PREV,  U_DESKTOP_MANAGER, U_DESKTOP_NEXT, ___,            U_MEH(KC_A),    U_MEH(KC_B),     U_MEH(KC_C),    U_MEH(KC_D),    U_MEH(KC_E),    ___,
         U_WINDOW_SWAPPER, KC_LSFT,       U_TILE_LEFT,     U_TILE_FILL,     U_TILE_RIGHT,    ___,             U_MEH(KC_F),    U_MEH(KC_G),     U_MEH(KC_H),    U_MEH(KC_I),    U_MEH(KC_J),    ___,
         ___,            ___,             U_MONITOR_NEXT,  U_MINIMIZE,      U_TILE_RESTORE,  ___,             U_MEH(KC_K),    U_MEH(KC_L),     U_MEH(KC_M),    U_MEH(KC_N),    U_MEH(KC_O),    ___,
                                                         ___,             ___,             ___,             ___,            ___,            ___

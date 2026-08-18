@@ -10,6 +10,12 @@ The build target is:
 sofle/rev1:andrewxhc
 ```
 
+Initialize the pinned community-module dependency after cloning:
+
+```text
+git submodule update --init --recursive
+```
+
 QMK is pinned to commit
 `f0e090f67a90f9b653faeddbf5a1c4f75e24e91a` (`0.33.11`) in the build
 workflow. Both halves use the same `.hex`; with the retained stock Sofle

@@ -133,7 +133,8 @@ persistent default-layer write, so startup returns to `DSEND`.
 | Magic Shift | Native Repeat Key plus local tap dispatch | Tap repeats a recent unmodified alpha (1200 ms), otherwise one-shot Shift; shifted tap toggles Caps Word; hold is Shift. The strict history rules were checked against the source's pinned [`zmk-adaptive-key`](https://github.com/urob/zmk-adaptive-key/tree/18cc2795a64ccb394d1a7b7d591a5bfe3f25924b). |
 | Caps Word | Native [Caps Word](https://docs.qmk.fm/features/caps_word), no idle timeout | See the source inconsistency note below. |
 | Num Word / sticky Num | Local continuation policy around native layer and one-shot-layer APIs | Digits and selected numeric punctuation continue the word; the breaking key still performs its underlying action. Silent layer, mouse, and leader events are preserved to match the pinned [`zmk-auto-layer`](https://github.com/urob/zmk-auto-layer/blob/dfa7c695ffde41ef8064245453595d50e198ae1d/src/behaviors/behavior_auto_layer.c) keycode-event model. |
-| Smart Mouse / Smart Button / swappers | Local state flags plus layer transitions and physical-position ignore sets | Mirrors the source tri-state use cases without importing a general tri-state engine. The Smart Button stale-state defect is intentionally fixed. |
+| Smart Mouse / Smart Button | Local state flags plus layer transitions and physical-position ignore sets | Mirrors the source tri-state smart-layer use cases. The Smart Button stale-state defect is intentionally fixed. |
+| App/window swappers | Getreuer's Cyclotab community module, configured for `Alt+Tab` and `Alt+grave` with no timeout | Repeated forward/reverse steps and release on APP-layer exit are delegated to a maintained QMK module. Unlike the source tri-state, Cyclotab consumes an unrelated interrupting press and has no arbitrary ignored-position list. |
 | OS-aware actions | Runtime Windows/macOS/Linux action table, with the pressed action cached until release | Avoids releasing a different chord if OS is changed while an action is held. |
 | Greek and compose leader actions | Custom prefix parser plus QMK Unicode Common | All 24 Greek sequences, shifted uppercase, Lenny compose, layer selection, reset, and boot are represented. |
 | Pointer and wheel keys | Native [Mouse Keys](https://docs.qmk.fm/features/mouse_keys) with tuned intervals and acceleration values | Approximation only; see mouse compromise below. |
@@ -143,13 +144,14 @@ persistent default-layer write, so startup returns to `DSEND`.
 ## Decisions after reviewing references
 
 The local `references/` checkout trees were used for patterns and trade-off
-comparison; none is a runtime dependency of this keymap.
+comparison and are not runtime dependencies. Runtime modules are explicitly
+identified below and pinned under `modules/`.
 
 | Reference | Revision reviewed | What it informed |
 | --- | --- | --- |
 | [`official`](references/official/) / [qmk/qmk_userspace](https://github.com/qmk/qmk_userspace/tree/caa715695de182564fed9a62ab1bd3b0aff7c4c0) | `caa7156` | External-userspace directory layout, `qmk.json` target, and reusable build workflow. |
 | [`getreuer`](references/getreuer/) / [getreuer/qmk-keymap](https://github.com/getreuer/qmk-keymap/tree/783791dd9eebe9a3db8b16bd32b7dc76bf0e6122) | `783791d` | Current native Chordal Hold, Flow Tap, callback tuning, and Key Override usage in a large keymap. |
-| [`getreuer-modules`](references/getreuer-modules/) / [getreuer/qmk-modules](https://github.com/getreuer/qmk-modules/tree/362fab399e87e02656b1a7327a7f8ff33d3f31ef) | `362fab3` | Achordion, Tap Flow, and Custom Shift Keys as concrete non-core alternatives. |
+| [`getreuer-modules`](modules/getreuer/) / [getreuer/qmk-modules](https://github.com/getreuer/qmk-modules/tree/788e0f3f2d98c5cd57a88616e2cc883bc9fb3310) | `788e0f3` | Cyclotab is a pinned runtime dependency for app/window switching; Achordion, Tap Flow, and Custom Shift Keys remain comparison points. |
 | [`drashna`](references/drashna/) / [drashna/qmk_userspace](https://github.com/drashna/qmk_userspace/tree/936e5fc86a84fa2908bac407b87a89ae0a9b0d61) | `936e5fc` | Organization of mature shared userspace code, callback composition, and feature gating. |
 | [`filterpaper`](references/filterpaper/) / [filterpaper/qmk_userspace](https://github.com/filterpaper/qmk_userspace/tree/2f08f3e) | `2f08f3e` | A compact custom contextual-HRM implementation and preprocessor-generated combo actions; useful comparison points, but unnecessary beside pinned core Chordal Hold and explicit combo tables. |
 | [`holykeebs`](references/holykeebs/) / [holykeebs/qmk-userspace](https://github.com/holykeebs/qmk-userspace/tree/58c61e5) | `58c61e5` | Cross-keyboard external-userspace organization and QMK/Vial compatibility gating; inspected, but this single pinned-QMK target does not need the compatibility layer. |

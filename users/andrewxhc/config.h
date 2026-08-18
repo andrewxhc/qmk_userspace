@@ -11,6 +11,11 @@
 #define FLOW_TAP_TERM 150
 #define ONESHOT_TIMEOUT 900
 
+// Cyclotab owns both application and application-window switching. Keep its
+// modifier held until another key event, normally release of the APP layer.
+#define CYCLOTAB_KEYS A(KC_TAB), A(KC_GRV)
+#define CYCLOTAB_TIMEOUT 0
+
 // Combo behavior mirrors the ZMK source's strict per-combo windows.
 #define COMBO_TERM 30
 #define COMBO_TERM_PER_COMBO

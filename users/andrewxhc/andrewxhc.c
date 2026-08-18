@@ -359,7 +359,9 @@ bool remember_last_key_user(uint16_t keycode, keyrecord_t *record, uint8_t *reme
             return false;
 
         case U_ESC_TAB ... U_OS_DOWN:
-        case U_CUT ... U_WINDOW_SWAPPER:
+        case U_CUT ... U_SCREENSHOT_REGION:
+        case U_SWAPPER:
+        case U_WINDOW_SWAPPER:
         case U_CANCEL:
         case U_APP_LAUNCHER:
         case U_SYM_SPACE:
@@ -555,8 +557,6 @@ static bool process_app_launcher(keyrecord_t *record) {
 
 static bool smart_mouse_active;
 static bool smart_button_active;
-static bool app_swapper_active;
-static bool window_swapper_active;
 
 static int8_t zen_position(keypos_t key) {
     if (key.row >= 1 && key.row <= 3 && key.col < 6) {
@@ -626,47 +626,6 @@ static void smart_button_off(void) {
     }
 }
 
-static void stop_app_swapper(void) {
-    if (app_swapper_active) {
-        app_swapper_active = false;
-        unregister_weak_mods(MOD_BIT(KC_LALT));
-    }
-}
-
-static void stop_window_swapper(void) {
-    if (window_swapper_active) {
-        window_swapper_active = false;
-        unregister_weak_mods(MOD_BIT(KC_LALT));
-    }
-}
-
-static bool swapper_ignored(int8_t position, bool window_swapper) {
-    if (window_swapper) {
-        return position == 12 || position == 13 || (position >= 19 && position <= 22);
-    }
-    return position == 0 || position == 1 || (position >= 19 && position <= 22);
-}
-
-static bool process_swapper(bool window, keyrecord_t *record) {
-    bool *active = window ? &window_swapper_active : &app_swapper_active;
-    const uint16_t step_keycode = window ? KC_GRV : KC_TAB;
-
-    if (record->event.pressed) {
-        if (!*active) {
-            *active = true;
-            register_weak_mods(MOD_BIT(KC_LALT));
-        }
-        // Keep the step key down until the physical release so consecutive
-        // steps cannot be coalesced by the host as zero-delay synthetic taps.
-        register_code16(step_keycode);
-        caps_word_off();
-        andrewxhc_combo_note_keypress();
-    } else {
-        unregister_code16(step_keycode);
-    }
-    return false;
-}
-
 static void cancel_oneshot_layer(void) {
     if (is_oneshot_layer_active()) {
         const uint8_t layer = get_oneshot_layer();
@@ -688,8 +647,6 @@ static void cancel_automatic_states(void) {
     num_word_off();
     smart_mouse_off();
     smart_button_off();
-    stop_app_swapper();
-    stop_window_swapper();
     clear_oneshot_mods();
     clear_oneshot_locked_mods();
     cancel_oneshot_layer();
@@ -715,13 +672,6 @@ bool pre_process_record_user(uint16_t keycode, keyrecord_t *record) {
             // adaptive-key history does not, so invalidate the alpha target.
             alpha_repeat_eligible = false;
         }
-    }
-
-    if (app_swapper_active && !swapper_ignored(position, false)) {
-        stop_app_swapper();
-    }
-    if (window_swapper_active && !swapper_ignored(position, true)) {
-        stop_window_swapper();
     }
 
     if (smart_mouse_active && keycode != U_SMART_MOUSE && !smart_mouse_ignored(position)) {
@@ -805,10 +755,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 set_runtime_os(OS_LINUX);
             }
             return false;
-        case U_SWAPPER:
-            return process_swapper(false, record);
-        case U_WINDOW_SWAPPER:
-            return process_swapper(true, record);
         case U_SMART_MOUSE:
             if (record->event.pressed) {
                 const int8_t position = zen_position(record->event.key);
@@ -909,11 +855,6 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
     const layer_state_t rising = state & ~layer_state;
     state = update_tri_layer_state(state, APP, NUM, FN);
-
-    if (rising) {
-        stop_app_swapper();
-        stop_window_swapper();
-    }
 
     const layer_state_t mouse_ignored_layers =
         ((layer_state_t)1 << MOU) | ((layer_state_t)1 << NAV) |

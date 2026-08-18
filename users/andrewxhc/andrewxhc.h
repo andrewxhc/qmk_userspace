@@ -52,12 +52,15 @@ enum andrewxhc_keycodes {
     U_SCREENSHOT_FULL,
     U_SCREENSHOT_WINDOW,
     U_SCREENSHOT_REGION,
-    U_SWAPPER,
-    U_WINDOW_SWAPPER,
     U_SMART_MOUSE,
     U_SMART_BUTTON,
     U_CANCEL,
 };
+
+// Cyclotab trigger keycodes. The module holds Alt between repeated presses
+// and releases it when the APP layer-tap is released.
+#define U_SWAPPER A(KC_TAB)
+#define U_WINDOW_SWAPPER A(KC_GRV)
 
 // Basic-key placeholders let QMK's native tap-hold engine resolve the hold
 // side. Their taps are intercepted in process_record_user().
