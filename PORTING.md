@@ -7,7 +7,16 @@ replacement for the keymap source.
 ## Reproducible inputs
 
 - Source configuration: `zmk-config` commit
-  [`45155a4959e9c4a461076b9d8ab33c1cf16b27df`](https://github.com/andrewxhc/zmk-config/commit/45155a4959e9c4a461076b9d8ab33c1cf16b27df).
+  [`b579f61ba011f8975df08865a085c8b041e86bc7`](https://github.com/andrewxhc/zmk-config/commit/b579f61ba011f8975df08865a085c8b041e86bc7)
+  (2026-08-18, "swapper_app changed to window_swapper").
+
+  The original record named `45155a4959e9c4a461076b9d8ab33c1cf16b27df`, but
+  that commit exists neither locally nor in `andrewxhc/zmk-config` or
+  `andrewxhc/zmk-config-urob` on GitHub, so it can no longer be checked out.
+  `b579f61` replaces it as the last ZMK commit this port matches: from the port
+  date (`af9c9e8`, 2026-07-26) to `b579f61`, the only keymap change in
+  `config/` is the `window_swapper` rename, which the port already carries as
+  `U_WINDOW_SWAPPER`. ZMK keymap changes after `b579f61` have not been ported.
 - Target firmware: QMK tag `0.33.11`, exact commit
   [`f0e090f67a90f9b653faeddbf5a1c4f75e24e91a`](https://github.com/qmk/qmk_firmware/tree/f0e090f67a90f9b653faeddbf5a1c4f75e24e91a).
   The GitHub Actions workflow pins this SHA rather than a moving branch.
@@ -342,3 +351,12 @@ exact QMK SHA recorded above.
 Flash the generated `sofle_rev1_andrewxhc.hex` to **each controller
 individually**. Disconnect USB before connecting or disconnecting the TRRS
 cable, then use left-side USB for normal operation.
+
+## Mac build baseline, November 12, 2026
+
+The Apple Silicon build of `sofle/rev1:andrewxhc` used AVR GCC 15.2.0,
+QMK `f0e090f67a90f9b653faeddbf5a1c4f75e24e91a`, userspace
+`998ba67280ef5b8fcc460b0e9485536429d196a2`, and Getreuer
+`788e0f3f2d98c5cd57a88616e2cc883bc9fb3310`. It used 28,066 of 28,672
+flash bytes (606 free). The HEX file had SHA-256
+`da5c85ed73721d79deeed8e4b6067c9346ba67fcabed45ef9d0ed4c4838fd597`.
