@@ -8,14 +8,14 @@
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [DSEND] = LAYOUT_ZEN(
         // LT5          LT4             LT3             LT2             LT1             LT0              RT0            RT1             RT2             RT3             RT4             RT5
-        U_ESC_TAB,      KC_X,           KC_C,           KC_L,           KC_F,           KC_V,            KC_QUOT,        KC_SCLN,         KC_U,           KC_P,           KC_Q,           MO(SYS),
+        U_ESC_TAB,      KC_X,           KC_C,           KC_L,           KC_F,           KC_V,            KC_QUOT,        KC_SCLN,         KC_U,           KC_P,           KC_Q,           MO(FIG),
         U_OS_START,     U_HML_GUI(KC_R), U_HML_ALT(KC_S), U_HML_SFT(KC_N), U_HML_CTL(KC_T), KC_G,          KC_DOT,         U_HMR_CTL(KC_A), U_HMR_SFT(KC_E), U_HMR_ALT(KC_H), U_HMR_GUI(KC_I), U_OS_END,
         KC_LCTL,        KC_Z,           KC_W,           KC_M,           KC_D,           KC_B,            KC_COMM,        KC_O,            KC_Y,           KC_K,           KC_J,           KC_RGUI,
                                                         U_APP_LAUNCHER, U_MAGIC_SHIFT,   U_NAV_BSPC,      U_NAV_ENTER,    U_SYM_SPACE,     U_SMART_NUM
     ),
 
     [QWERTY] = LAYOUT_ZEN(
-        U_ESC_TAB,      KC_Q,           KC_W,           KC_E,           KC_R,           KC_T,            KC_Y,           KC_U,            KC_I,           KC_O,           KC_P,           MO(SYS),
+        U_ESC_TAB,      KC_Q,           KC_W,           KC_E,           KC_R,           KC_T,            KC_Y,           KC_U,            KC_I,           KC_O,           KC_P,           MO(FIG),
         U_OS_START,     U_HML_GUI(KC_A), U_HML_ALT(KC_S), U_HML_SFT(KC_D), U_HML_CTL(KC_F), KC_G,          KC_H,           U_HMR_CTL(KC_J), U_HMR_SFT(KC_K), U_HMR_ALT(KC_L), U_HMR_GUI(KC_SCLN), U_OS_END,
         KC_LCTL,        KC_Z,           KC_X,           KC_C,           KC_V,           KC_B,            KC_N,           KC_M,            KC_COMM,        KC_DOT,         KC_QUOT,        KC_RGUI,
                                                         U_APP_LAUNCHER, U_MAGIC_SHIFT,   U_NAV_BSPC,      U_NAV_ENTER,    U_SYM_SPACE,     U_SMART_NUM
@@ -42,10 +42,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                         LT(APP, KC_DOT), LSFT_T(KC_0),   ___,             ___,            ___,            ___
     ),
 
-    [SYS] = LAYOUT_ZEN(
-        U_CANCEL,       ___,             ___,             ___,             ___,             ___,             KC_MPRV,        KC_MPLY,         KC_MNXT,        ___,            KC_F22,         ___,
-        ___,            U_OS_WIN,        U_OS_MAC,        U_OS_LIN,        ___,             ___,             KC_VOLD,        KC_MUTE,         KC_VOLU,        ___,            KC_F23,         KC_F24,
-        ___,            U_SMART_BUTTON,  U_SMART_MOUSE,   ___,             QK_BOOT,         QK_REBOOT,       QK_REBOOT,      QK_BOOT,         ___,            ___,            TO(DSEND),      TO(QWERTY),
+    [FIG] = LAYOUT_ZEN(
+        U_CANCEL,       ___,             ___,             ___,             ___,             ___,             KC_MPRV,        KC_MPLY,         KC_MNXT,        MO(MNT),        KC_F22,         ___,
+        ___,            ___,             ___,             ___,             ___,             ___,             KC_VOLD,        KC_MUTE,         KC_VOLU,        ___,            KC_F23,         KC_F24,
+        ___,            U_OS_WIN,        U_OS_MAC,        U_OS_LIN,        U_SMART_BUTTON,  U_SMART_MOUSE,   ___,            ___,             ___,            ___,            TO(DSEND),      TO(QWERTY),
                                                         ___,             ___,             ___,             ___,            ___,            ___
     ),
 
@@ -75,5 +75,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         ___,            KC_F11,          KC_F4,           KC_F5,           KC_F6,           KC_SCRL,         ___,            ___,             ___,            ___,            ___,            ___,
         ___,            KC_F10,          KC_F1,           KC_F2,           KC_F3,           KC_PAUS,         ___,            ___,             ___,            ___,            ___,            ___,
                                                         ___,             ___,             ___,             ___,            ___,            ___
+    ),
+
+    // Maintenance: reached by holding MO(MNT) on FIG. Every other position is
+    // a dead KC_NO, matching the source's XXX (&none) entries.
+    [MNT] = LAYOUT_ZEN(
+        KC_NO,          KC_NO,           KC_NO,           KC_NO,           KC_NO,           KC_NO,           KC_NO,          KC_NO,           KC_NO,          KC_NO,          KC_NO,          KC_NO,
+        KC_NO,          KC_NO,           KC_NO,           KC_NO,           KC_NO,           KC_NO,           KC_NO,          KC_NO,           KC_NO,          KC_NO,          KC_NO,          KC_NO,
+        KC_NO,          KC_NO,           KC_NO,           KC_NO,           QK_BOOT,         QK_REBOOT,       QK_REBOOT,      QK_BOOT,         KC_NO,          KC_NO,          KC_NO,          KC_NO,
+                                                        KC_NO,           KC_NO,           KC_NO,           KC_NO,          KC_NO,          KC_NO
     ),
 };

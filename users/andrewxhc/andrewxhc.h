@@ -11,11 +11,12 @@ enum andrewxhc_layers {
     SYM,
     NAV,
     NUM,
-    SYS,
+    FIG,
     MOU,
     BTN,
     APP,
     FN,
+    MNT,
 };
 
 enum andrewxhc_keycodes {

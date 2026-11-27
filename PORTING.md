@@ -111,18 +111,19 @@ documentation](https://docs.qmk.fm/features/bootmagic).
 
 | Layer | Access and purpose |
 | --- | --- |
-| `DSEND` | Startup base. Select from `SYS` or leader sequence `DSEND`. |
-| `QWERTY` | Alternate base. Select from `SYS` or leader sequence `QWERTY`. |
+| `DSEND` | Startup base. Select from `FIG` or leader sequence `DSEND`. |
+| `QWERTY` | Alternate base. Select from `FIG` or leader sequence `QWERTY`. |
 | `SYM` | Hold the Space/Symbol thumb key; its tap is Space or the shifted `. ` + one-shot Shift macro. |
 | `NAV` | Hold either navigation thumb (`Backspace` or `Enter`) for navigation and editing. |
 | `NUM` | Hold Smart Num; tap starts Num Word and a second tap within 200 ms changes it to one-shot `NUM`. |
-| `SYS` | Hold the outer top-right base key for OS selection, media, reset/boot, smart-layer controls, and base-layer selection. |
+| `FIG` | Hold the outer top-right base key for input-language keys, OS selection, media, smart-layer controls, and base-layer selection. |
 | `MOU` | Smart Mouse toggle or the `L+F` source-position combo. |
-| `BTN` | Smart Button control on `SYS`; supplies mouse buttons and mirrored editing/modifier keys. |
+| `BTN` | Smart Button control on `FIG`; supplies mouse buttons and mirrored editing/modifier keys. |
 | `APP` | Hold App Launcher, or hold the `.` layer-tap on `NUM`, for app/window controls and Meh shortcuts. |
 | `FN` | QMK tri-layer: active while both `APP` and `NUM` are active. |
+| `MNT` | Hold `MO(MNT)` on `FIG` for bootloader and reboot. Every other position is `KC_NO`. |
 
-The `SYS` layer selects Windows, macOS, or Linux behavior manually. Windows
+The `FIG` layer selects Windows, macOS, or Linux behavior manually. Windows
 with WinCompose Unicode input is the power-up default. OS-aware shortcuts and
 Unicode mode change together. These selections are deliberately volatile:
 they are updated in RAM without an EEPROM write, and reset to Windows on
