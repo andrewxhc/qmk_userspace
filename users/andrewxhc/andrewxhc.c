@@ -160,6 +160,7 @@ typedef enum {
     CHT_OS_RIGHT,
     CHT_OS_UP,
     CHT_OS_DOWN,
+    CHT_OS_QUIT,
     CHT_COUNT,
 } custom_hold_t;
 
@@ -201,6 +202,8 @@ static int8_t custom_hold_index(uint16_t keycode) {
             return CHT_OS_UP;
         case U_OS_DOWN:
             return CHT_OS_DOWN;
+        case U_OS_QUIT:
+            return CHT_OS_QUIT;
         default:
             return -1;
     }
@@ -209,6 +212,9 @@ static int8_t custom_hold_index(uint16_t keycode) {
 static uint16_t custom_hold_term(custom_hold_t index) {
     if (index == CHT_OS_START || index == CHT_OS_END) {
         return 800;
+    }
+    if (index == CHT_OS_QUIT) {
+        return 500;
     }
     return 220;
 }
@@ -235,6 +241,9 @@ static uint16_t custom_hold_action(custom_hold_t index, bool hold, runtime_os_t 
             return hold ? (os == OS_MACOS ? LALT(KC_UP) : LCTL(KC_UP)) : KC_UP;
         case CHT_OS_DOWN:
             return hold ? (os == OS_MACOS ? LALT(KC_DOWN) : LCTL(KC_DOWN)) : KC_DOWN;
+        case CHT_OS_QUIT:
+            // Tap does nothing, matching the source's &none tap binding.
+            return hold ? (os == OS_MACOS ? LGUI(KC_Q) : LALT(KC_F4)) : KC_NO;
         default:
             return KC_NO;
     }
@@ -248,7 +257,14 @@ static void resolve_custom_hold(custom_hold_t index, bool hold) {
 
     caps_word_off();
     const uint16_t action = custom_hold_action(index, hold, state->os);
-    if (hold) {
+    if (hold && index == CHT_OS_QUIT) {
+        // Tap the quit chord once instead of holding it, so host key repeat
+        // cannot go on to quit the next app that comes to the front.
+        state->held_action = KC_NO;
+        state->resolution  = CHT_HELD;
+        tap_code16(action);
+        andrewxhc_combo_note_keypress();
+    } else if (hold) {
         state->held_action = action;
         state->resolution  = CHT_HELD;
         register_code16(action);
@@ -284,8 +300,9 @@ static bool process_custom_hold(uint16_t keycode, keyrecord_t *record) {
     const custom_hold_t index = (custom_hold_t)raw_index;
     custom_hold_state_t *state = &custom_holds[index];
     if (record->event.pressed) {
-        const bool force_tap =
-            custom_hold_had_tap[index] && timer_elapsed32(custom_hold_last_tap[index]) <= 220;
+        // The quit key has no quick-tap window in the source.
+        const bool force_tap = index != CHT_OS_QUIT && custom_hold_had_tap[index] &&
+                               timer_elapsed32(custom_hold_last_tap[index]) <= 220;
         *state = (custom_hold_state_t){
             .active     = true,
             .force_tap  = force_tap,
@@ -367,7 +384,7 @@ bool remember_last_key_user(uint16_t keycode, keyrecord_t *record, uint8_t *reme
         case U_SMART_BUTTON:
             return false;
 
-        case U_ESC_TAB ... U_OS_DOWN:
+        case U_ESC_TAB ... U_OS_QUIT:
         case U_CUT ... U_SCREENSHOT_REGION:
         case U_SWAPPER:
         case U_WINDOW_SWAPPER:

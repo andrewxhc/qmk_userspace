@@ -27,6 +27,7 @@ enum andrewxhc_keycodes {
     U_OS_RIGHT,
     U_OS_UP,
     U_OS_DOWN,
+    U_OS_QUIT,
     U_OS_WIN,
     U_OS_MAC,
     U_OS_LIN,
