@@ -41,6 +41,12 @@ enum andrewxhc_keycodes {
     U_NEW_WINDOW,
     U_PRIVATE_WINDOW,
     U_ADDRESS_BAR,
+    U_CLOSE,
+    U_REOPEN_TAB,
+    U_RELOAD,
+    U_ZOOM_IN,
+    U_ZOOM_OUT,
+    U_ZOOM_RESET,
     U_DESKTOP_PREV,
     U_DESKTOP_MANAGER,
     U_DESKTOP_NEXT,
@@ -50,6 +56,9 @@ enum andrewxhc_keycodes {
     U_TILE_RESTORE,
     U_MONITOR_NEXT,
     U_MINIMIZE,
+    U_LANG_EN,
+    U_LANG_PINYIN,
+    U_LANG_NEXT,
     U_SCREENSHOT_FULL,
     U_SCREENSHOT_WINDOW,
     U_SCREENSHOT_REGION,
@@ -62,6 +71,10 @@ enum andrewxhc_keycodes {
 // and releases it when the APP layer-tap is released.
 #define U_SWAPPER A(KC_TAB)
 #define U_WINDOW_SWAPPER A(KC_GRV)
+
+// Browser tab cycling uses the same chord on every OS.
+#define U_TAB_PREV C(S(KC_TAB))
+#define U_TAB_NEXT C(KC_TAB)
 
 // Basic-key placeholders let QMK's native tap-hold engine resolve the hold
 // side. Their taps are intercepted in process_record_user().

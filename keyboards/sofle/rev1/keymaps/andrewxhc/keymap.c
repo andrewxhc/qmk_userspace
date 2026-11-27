@@ -29,9 +29,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [NAV] = LAYOUT_ZEN(
-        ___,            U_SCREENSHOT_FULL, U_SCREENSHOT_WINDOW, U_SCREENSHOT_REGION, ___, ___,            ___,            U_ADDRESS_BAR,   KC_PGUP,        KC_PGDN,        KC_INS,         ___,
-        ___,            U_REDO,          ___,             U_SELECT_ALL,    U_FIND,          ___,            ___,            U_OS_LEFT,       U_OS_UP,         U_OS_DOWN,       U_OS_RIGHT,     ___,
-        ___,            U_UNDO,          U_CUT,           U_COPY,          U_PASTE,         ___,            ___,            U_NEW_TAB,       U_NEW_WINDOW,    U_PRIVATE_WINDOW, ___,            ___,
+        ___,            U_SCREENSHOT_FULL, U_SCREENSHOT_WINDOW, U_SCREENSHOT_REGION, U_TAB_PREV, U_TAB_NEXT,   U_ZOOM_IN,      U_ADDRESS_BAR,   MS_BTN4,        MS_BTN5,        U_RELOAD,       KC_PGUP,
+        ___,            U_REDO,          ___,             U_SELECT_ALL,    U_FIND,          U_CLOSE,         U_ZOOM_RESET,   U_OS_LEFT,       U_OS_UP,         U_OS_DOWN,       U_OS_RIGHT,     ___,
+        ___,            U_UNDO,          U_CUT,           U_COPY,          U_PASTE,         KC_INS,          U_ZOOM_OUT,     U_NEW_TAB,       U_NEW_WINDOW,    U_PRIVATE_WINDOW, U_REOPEN_TAB,  KC_PGDN,
                                                         ___,             ___,             ___,             ___,            ___,            ___
     ),
 
@@ -44,7 +44,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [FIG] = LAYOUT_ZEN(
         U_CANCEL,       ___,             ___,             ___,             ___,             ___,             KC_MPRV,        KC_MPLY,         KC_MNXT,        MO(MNT),        KC_F22,         ___,
-        ___,            ___,             ___,             ___,             ___,             ___,             KC_VOLD,        KC_MUTE,         KC_VOLU,        ___,            KC_F23,         KC_F24,
+        ___,            U_LANG_EN,       U_LANG_PINYIN,   U_LANG_NEXT,     ___,             ___,             KC_VOLD,        KC_MUTE,         KC_VOLU,        ___,            KC_F23,         KC_F24,
         ___,            U_OS_WIN,        U_OS_MAC,        U_OS_LIN,        U_SMART_BUTTON,  U_SMART_MOUSE,   ___,            ___,             ___,            ___,            TO(DSEND),      TO(QWERTY),
                                                         ___,             ___,             ___,             ___,            ___,            ___
     ),
