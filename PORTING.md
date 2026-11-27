@@ -16,7 +16,8 @@ replacement for the keymap source.
   `b579f61` replaces it as the last ZMK commit this port matches: from the port
   date (`af9c9e8`, 2026-07-26) to `b579f61`, the only keymap change in
   `config/` is the `window_swapper` rename, which the port already carries as
-  `U_WINDOW_SWAPPER`. ZMK keymap changes after `b579f61` have not been ported.
+  `U_WINDOW_SWAPPER`. Later ZMK changes are recorded under
+  [Sync with ZMK `702883c`](#sync-with-zmk-702883c-november-27-2026).
 - Target firmware: QMK tag `0.33.11`, exact commit
   [`f0e090f67a90f9b653faeddbf5a1c4f75e24e91a`](https://github.com/qmk/qmk_firmware/tree/f0e090f67a90f9b653faeddbf5a1c4f75e24e91a).
   The GitHub Actions workflow pins this SHA rather than a moving branch.
@@ -361,3 +362,44 @@ QMK `f0e090f67a90f9b653faeddbf5a1c4f75e24e91a`, userspace
 `788e0f3f2d98c5cd57a88616e2cc883bc9fb3310`. It used 28,066 of 28,672
 flash bytes (606 free). The HEX file had SHA-256
 `da5c85ed73721d79deeed8e4b6067c9346ba67fcabed45ef9d0ed4c4838fd597`.
+
+## Sync with ZMK `702883c`, November 27, 2026
+
+The port was brought up to `zmk-config`
+[`702883c47f7d7b68308381e9487c15fbaf78f430`](https://github.com/andrewxhc/zmk-config/commit/702883c47f7d7b68308381e9487c15fbaf78f430)
+(2026-11-22). Ported:
+
+- `193cce8`: `SYS` split into `FIG` and `MNT`. `FIG` gains English, Pinyin,
+  and next-input-language keys on its home row, with OS selection and the
+  smart-layer keys on its bottom row. Bootloader and reboot moved to `MNT`.
+- `4fecb84`: NAV browser keys (previous/next tab, zoom in/out/reset, reload,
+  reopen tab, close tab, mouse back/forward) and the moved Page Up, Page Down,
+  and Insert keys; hold-to-quit (`U_OS_QUIT`) on APP.
+- `1ab7d61`: the window-swapper back key. The source sends `Shift+Tab` while
+  the swapper modifier is held. Cyclotab ends the switch on any key that is
+  not its trigger or a plain Shift, so the port uses `S(U_WINDOW_SWAPPER)`
+  instead, matching the existing `S(U_SWAPPER)` reverse key.
+- `a760abf`: the macOS region screenshot copies to the clipboard
+  (`Ctrl+Shift+Cmd+4`).
+
+Not ported:
+
+- `906bb23` (os-persist): the OS selection stays volatile and resets to
+  Windows on power-up, as described under
+  [Layers and runtime selection](#layers-and-runtime-selection).
+- The space hold-tap experiments (`6486d58`, `b94af04`, `d7a8406`, `399a3c0`)
+  ended back at balanced in `702883c`, so the space key is unchanged.
+
+Two deliberate differences in hold-to-quit:
+
+- The source holds the quit chord until the key is released. The port taps
+  it once when the 500 ms hold resolves, so host key repeat cannot go on to
+  quit the next app that comes to the front.
+- The local tap-hold engine's 220 ms quick-tap window is disabled for this
+  key, because the source key has no quick-tap setting.
+
+The Apple Silicon build used the same toolchain and pins as the November 12
+baseline above. It used 28,316 of 28,672 flash bytes (356 free). The HEX file
+had SHA-256
+`ba7c31b054ab369e7da9fa5cd3f1e30aabba172a7e7d8c210f6ef7546b59d0d1`.
+None of these changes has been tested on hardware yet.
